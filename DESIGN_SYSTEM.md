@@ -136,3 +136,11 @@ Child radius must always be smaller than or equal to parent container:
 - **Interactive Feedback:** Exclusively color shifts (`hover:bg-slate-100`) or ring focus (`focus-visible:ring-2 focus-visible:ring-slate-900`).
 - **Duration:** 150ms for hovers, 200ms for drawers/modals.
 - **Accessibility:** `cursor-pointer` on all clickables, `aria-label` on iconography, complete keyboard operability.
+
+---
+
+## 7. Advanced Newsroom Telemetry & Command Palette
+- **Linear-Style Command Palette (`Ctrl + K` / `Cmd + K`):** Instant keyboard accessibility for newsroom tasks (new article, review queue, categories, domains, system settings).
+- **Zero-Dependency SVG Velocity Chart:** Native SVG area curve tracking 7-day publication cadence, fully cross-database compatible (SQLite & MySQL) without heavy external JavaScript libraries.
+- **Micro Sparklines:** Embedded 64x24 vector sparklines in all 4 KPI cards for instant visual trajectory without clutter.
+- **Real-Time Client-Side Table Filter:** Fast keystroke-driven article title filtering on the dashboard without full page reloads.
