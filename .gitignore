@@ -1,0 +1,29 @@
+# Local SQLite databases & cache
+/storage/*.sqlite
+/storage/*.sqlite-shm
+/storage/*.sqlite-wal
+
+# Uploaded user media (keep folder via .gitkeep)
+/storage/uploads/*
+!/storage/uploads/.gitkeep
+
+# Deploy archives & logs
+*.zip
+*.tar.gz
+*.log
+
+# IDE & Editor files
+.vscode/
+.idea/
+.agents/
+*.sublime-project
+*.sublime-workspace
+
+# Skills and temp agent lockfiles
+skills-lock.json
+*.example
+
+# OS generated files
+.DS_Store
+Thumbs.db
+Desktop.ini

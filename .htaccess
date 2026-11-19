@@ -1,0 +1,31 @@
+# =======================================================
+# V-NEWS CMS - Cấu hình Apache Web Server & URL Rewrite
+# =======================================================
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Chặn truy cập trực tiếp vào các file nhạy cảm và CSDL
+    RewriteRule ^storage/database\.sqlite$ - [F,L]
+    RewriteRule ^database/.*\.sql$ - [F,L]
+    RewriteRule ^\.env$ - [F,L]
+
+    # Clean SEO URLs (Tùy chọn)
+    # /bai-viet/slug-name -> /article.php?slug=slug-name
+    RewriteRule ^bai-viet/([a-zA-Z0-9-]+)/?$ article.php?slug=$1 [L,QSA]
+    RewriteRule ^chuyen-muc/([a-zA-Z0-9-]+)/?$ category.php?slug=$1 [L,QSA]
+</IfModule>
+
+# Cấu hình mã hóa ký tự UTF-8 chuẩn tiếng Việt
+AddDefaultCharset UTF-8
+
+# Bảo vệ chống clickjacking và đánh cắp mime-type
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# Ngăn chặn duyệt thư mục (Disable Directory Browsing - Commented for InfinityFree compatibility)
+# Options -Indexes

@@ -1,0 +1,214 @@
+/* ========================================================
+   V-NEWS CMS - Editorial & High-Taste Design System
+   Inspired by Anti-AI-Slop (arham777/ui-ux-kit) & The New York Times, The Verge
+   ======================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap');
+
+:root {
+    --font-heading: 'Playfair Display', Georgia, Cambria, 'Times New Roman', serif;
+    --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-reading: 'Newsreader', Georgia, serif;
+    
+    --color-ink: #0f172a;
+    --color-paper: #fdfdfd;
+    --color-crimson: #b91c1c;
+    --color-border: #e2e8f0;
+}
+
+html {
+    overflow-x: hidden;
+    max-width: 100vw;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: #fbfbfb;
+    color: #1e293b;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    max-width: 100vw;
+    position: relative;
+    width: 100%;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+/* Responsive typography and text wrap */
+h1, h2, h3, h4, h5, h6, p, a, span {
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+/* Clean No-Scrollbar Utility */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.dark body {
+    background-color: #0c0f14;
+    color: #e2e8f0;
+}
+
+/* Editorial Typography */
+.font-headline {
+    font-family: var(--font-heading);
+    letter-spacing: -0.02em;
+}
+
+.font-editorial {
+    font-family: var(--font-reading);
+}
+
+/* Double hairline border (Thanh kẻ chỉ báo in cổ điển) */
+.border-double-b {
+    border-bottom: 3px double #1e293b;
+}
+
+.dark .border-double-b {
+    border-bottom: 3px double #94a3b8;
+}
+
+/* Breaking news ticker */
+@keyframes tickerSlide {
+    0%, 20% { transform: translateY(0); }
+    25%, 45% { transform: translateY(-100%); }
+    50%, 70% { transform: translateY(-200%); }
+    75%, 95% { transform: translateY(-300%); }
+    100% { transform: translateY(-400%); }
+}
+
+.ticker-wrap {
+    overflow: hidden;
+    height: 1.5rem;
+}
+
+.ticker-track {
+    animation: tickerSlide 16s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.ticker-track:hover {
+    animation-play-state: paused;
+}
+
+/* Article Reading Prose (Chuẩn báo chí xuất bản cao cấp) */
+.article-prose {
+    font-family: var(--font-reading);
+    font-size: 1.25rem;
+    line-height: 1.85;
+    color: #27272a;
+}
+
+.dark .article-prose {
+    color: #d4d4d8;
+}
+
+.article-prose p {
+    margin-bottom: 1.75rem;
+}
+
+.article-prose p.lead {
+    font-family: var(--font-body);
+    font-size: 1.25rem;
+    line-height: 1.7;
+    font-weight: 500;
+    color: #18181b;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid #e4e4e7;
+    margin-bottom: 2rem;
+}
+
+.dark .article-prose p.lead {
+    color: #f4f4f5;
+    border-bottom-color: #27272a;
+}
+
+.article-prose h2, .article-prose h3 {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    color: #09090b;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+}
+
+.dark .article-prose h2, .dark .article-prose h3 {
+    color: #fafafa;
+}
+
+.article-prose h2 { font-size: 1.85rem; }
+.article-prose h3 { font-size: 1.45rem; }
+
+.article-prose blockquote {
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-size: 1.4rem;
+    line-height: 1.6;
+    border-left: 3px solid #b91c1c;
+    padding: 1rem 0 1rem 1.75rem;
+    margin: 2.5rem 0;
+    color: #18181b;
+    background: transparent;
+}
+
+.dark .article-prose blockquote {
+    color: #f4f4f5;
+    border-left-color: #ef4444;
+}
+
+.article-prose ul {
+    list-style-type: square;
+    margin: 1.5rem 0 1.75rem 1.5rem;
+}
+
+.article-prose li {
+    margin-bottom: 0.6rem;
+}
+
+/* Category Badges - Editorial Minimalist */
+.cat-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.6875rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.2rem 0.55rem;
+    border-radius: 2px;
+}
+
+.cat-badge-indigo { background: #1e1b4b; color: #e0e7ff; }
+.cat-badge-purple { background: #3b0764; color: #f3e8ff; }
+.cat-badge-emerald { background: #064e3b; color: #d1fae5; }
+.cat-badge-amber { background: #451a03; color: #fef3c7; }
+.cat-badge-rose { background: #4c0519; color: #ffe4e6; }
+
+/* Subtle Line Clamps */
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Clean Toast */
+#toast-container {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 9999;
+}
