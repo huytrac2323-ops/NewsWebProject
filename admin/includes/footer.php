@@ -51,6 +51,66 @@
         if (mobileToggleBtn) mobileToggleBtn.addEventListener('click', openSidebar);
         if (closeSidebarBtn) closeSidebarBtn.addEventListener('click', closeSidebar);
         if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', closeSidebar);
+
+        // Command Palette Controller (Linear Style)
+        const cmdBtn = document.getElementById('open-cmd-palette-btn');
+        const cmdModal = document.getElementById('cmd-palette-backdrop');
+        const cmdInput = document.getElementById('cmd-palette-input');
+        const cmdItems = document.querySelectorAll('.cmd-item');
+
+        function openCommandPalette() {
+            if (!cmdModal) return;
+            cmdModal.classList.remove('hidden');
+            if (cmdInput) {
+                cmdInput.value = '';
+                cmdInput.focus();
+                filterCommandItems('');
+            }
+        }
+
+        function closeCommandPalette() {
+            if (!cmdModal) return;
+            cmdModal.classList.add('hidden');
+        }
+
+        function filterCommandItems(keyword) {
+            const q = keyword.toLowerCase().trim();
+            cmdItems.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (!q || text.includes(q)) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+        }
+
+        if (cmdBtn) cmdBtn.addEventListener('click', openCommandPalette);
+
+        if (cmdModal) {
+            cmdModal.addEventListener('click', (e) => {
+                if (e.target === cmdModal) closeCommandPalette();
+            });
+        }
+
+        if (cmdInput) {
+            cmdInput.addEventListener('input', (e) => filterCommandItems(e.target.value));
+        }
+
+        // Keyboard Shortcuts (Ctrl+K or Cmd+K to open, Esc to close)
+        window.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+                e.preventDefault();
+                if (cmdModal && cmdModal.classList.contains('hidden')) {
+                    openCommandPalette();
+                } else {
+                    closeCommandPalette();
+                }
+            } else if (e.key === 'Escape') {
+                closeCommandPalette();
+                closeSidebar();
+            }
+        });
     </script>
 </body>
 </html>

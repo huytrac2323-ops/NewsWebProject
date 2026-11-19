@@ -2,6 +2,7 @@
 /**
  * V-NEWS CMS - Admin Header & Shell
  * Compliant with AntiSlopUI Design Contract (DESIGN_SYSTEM.md)
+ * Surface Profile: §B2 Dashboard / Admin / Precision Command Center
  */
 require_once dirname(__DIR__, 2) . '/config/config.php';
 require_login();
@@ -24,7 +25,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- Tailwind CSS with Anti-AI-Slop Config -->
+    <!-- Tailwind CSS with Precision Tokens -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -58,6 +59,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .tabular-nums { font-variant-numeric: tabular-nums; }
+        .cmd-item:hover, .cmd-item.active { background-color: rgba(241, 245, 249, 1); }
+        .dark .cmd-item:hover, .dark .cmd-item.active { background-color: rgba(30, 41, 59, 1); }
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen flex antialiased">
@@ -199,17 +202,32 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 
                 <!-- Clean Breadcrumbs -->
                 <nav class="flex items-center space-x-2 text-xs" aria-label="Breadcrumb">
-                    <span class="text-slate-500">Quản Trị</span>
+                    <span class="text-slate-400">Quản Trị</span>
                     <i class="fas fa-chevron-right text-[9px] text-slate-300 dark:text-slate-600"></i>
                     <span class="font-medium text-slate-900 dark:text-white"><?= htmlspecialchars($page_title ?? 'Bảng Điều Khiển') ?></span>
                 </nav>
             </div>
 
-            <div class="flex items-center space-x-3">
+            <!-- Right Tools: Command Palette, Live Status, Site Link, Theme Toggle -->
+            <div class="flex items-center space-x-2.5 sm:space-x-3">
+                
+                <!-- Command Palette Shortcut Button (Linear Style) -->
+                <button id="open-cmd-palette-btn" class="hidden sm:inline-flex items-center gap-2 px-2.5 py-1.5 rounded-md border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 text-xs text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors duration-150" title="Mở thanh tìm kiếm lệnh nhanh">
+                    <i class="fas fa-magnifying-glass text-[10px]"></i>
+                    <span class="text-[11px] font-medium">Tìm nhanh</span>
+                    <kbd class="font-mono text-[9px] bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 px-1 py-0.5 rounded text-slate-400">Ctrl K</kbd>
+                </button>
+
+                <!-- Live newsroom status dot -->
+                <div class="hidden lg:inline-flex items-center gap-2 px-2.5 py-1 rounded-md border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/40 text-[11px] font-mono text-slate-500">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span>ONLINE</span>
+                </div>
+
                 <!-- Xem website -->
-                <a href="<?= url() ?>" target="_blank" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors duration-150">
-                    <i class="fas fa-arrow-up-right-from-square text-[11px] text-slate-500 dark:text-slate-400"></i>
-                    <span>Xem Website</span>
+                <a href="<?= url() ?>" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition-colors duration-150">
+                    <i class="fas fa-arrow-up-right-from-square text-[10px] text-slate-500 dark:text-slate-400"></i>
+                    <span class="hidden sm:inline">Xem Website</span>
                 </a>
 
                 <!-- Theme Toggle Button -->
@@ -219,6 +237,62 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 </button>
             </div>
         </header>
+
+        <!-- COMMAND PALETTE MODAL (Linear Style) -->
+        <div id="cmd-palette-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-start justify-center pt-20 px-4">
+            <div id="cmd-palette-dialog" class="w-full max-w-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+                <div class="p-3 border-b border-slate-200 dark:border-slate-800 flex items-center gap-3">
+                    <i class="fas fa-search text-slate-400 text-xs pl-1"></i>
+                    <input type="text" id="cmd-palette-input" placeholder="Tìm tác vụ hoặc trang quản trị..." 
+                           class="w-full bg-transparent text-xs text-slate-900 dark:text-white focus:outline-none placeholder-slate-400">
+                    <kbd class="text-[10px] font-mono text-slate-400 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700">ESC</kbd>
+                </div>
+                <div id="cmd-palette-list" class="max-h-64 overflow-y-auto p-2 space-y-1 text-xs">
+                    <a href="<?= url('admin/article_edit.php') ?>" class="cmd-item flex items-center justify-between p-2 rounded-md text-slate-700 dark:text-slate-200 transition-colors">
+                        <span class="flex items-center gap-2.5">
+                            <i class="fas fa-pen-to-square w-4 text-center text-slate-400"></i>
+                            <span>Soạn thảo bài viết mới</span>
+                        </span>
+                        <span class="text-[10px] text-slate-400 font-mono">Tác vụ</span>
+                    </a>
+                    <a href="<?= url('admin/articles.php') ?>" class="cmd-item flex items-center justify-between p-2 rounded-md text-slate-700 dark:text-slate-200 transition-colors">
+                        <span class="flex items-center gap-2.5">
+                            <i class="fas fa-newspaper w-4 text-center text-slate-400"></i>
+                            <span>Quản lý tất cả bài viết</span>
+                        </span>
+                        <span class="text-[10px] text-slate-400 font-mono">Trang</span>
+                    </a>
+                    <a href="<?= url('admin/categories.php') ?>" class="cmd-item flex items-center justify-between p-2 rounded-md text-slate-700 dark:text-slate-200 transition-colors">
+                        <span class="flex items-center gap-2.5">
+                            <i class="fas fa-folder-tree w-4 text-center text-slate-400"></i>
+                            <span>Quản lý chuyên mục tin tức</span>
+                        </span>
+                        <span class="text-[10px] text-slate-400 font-mono">Trang</span>
+                    </a>
+                    <a href="<?= url('admin/comments.php') ?>" class="cmd-item flex items-center justify-between p-2 rounded-md text-slate-700 dark:text-slate-200 transition-colors">
+                        <span class="flex items-center gap-2.5">
+                            <i class="fas fa-comments w-4 text-center text-slate-400"></i>
+                            <span>Kiểm duyệt bình luận độc giả</span>
+                        </span>
+                        <span class="text-[10px] text-slate-400 font-mono">Trang</span>
+                    </a>
+                    <a href="<?= url('admin/domain_guide.php') ?>" class="cmd-item flex items-center justify-between p-2 rounded-md text-slate-700 dark:text-slate-200 transition-colors">
+                        <span class="flex items-center gap-2.5">
+                            <i class="fas fa-globe w-4 text-center text-slate-400"></i>
+                            <span>Tài liệu trỏ DNS & Tên miền riêng</span>
+                        </span>
+                        <span class="text-[10px] text-slate-400 font-mono">Hạ tầng</span>
+                    </a>
+                    <a href="<?= url('admin/settings.php') ?>" class="cmd-item flex items-center justify-between p-2 rounded-md text-slate-700 dark:text-slate-200 transition-colors">
+                        <span class="flex items-center gap-2.5">
+                            <i class="fas fa-sliders w-4 text-center text-slate-400"></i>
+                            <span>Cài đặt tiêu đề & Logo website</span>
+                        </span>
+                        <span class="text-[10px] text-slate-400 font-mono">Hệ thống</span>
+                    </a>
+                </div>
+            </div>
+        </div>
 
         <!-- MAIN CONTENT CANVAS -->
         <main class="p-6 md:p-8 flex-1 max-w-7xl w-full mx-auto">
